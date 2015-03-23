@@ -28,6 +28,8 @@ USERNAME_FORM_FIELD = get_setting('DEFENDER_USERNAME_FORM_FIELD', 'username')
 # see if the django app is sitting behind a reverse proxy
 BEHIND_REVERSE_PROXY = get_setting('DEFENDER_BEHIND_REVERSE_PROXY', False)
 
+ENABLE_IP_LOCK = get_setting('DEFENDER_ENABLE_IP_LOCK', True)
+
 # the prefix for these keys in your cache.
 CACHE_PREFIX = get_setting('DEFENDER_CACHE_PREFIX', 'defender')
 

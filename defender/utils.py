@@ -160,20 +160,27 @@ def record_failed_attempt(ip, username):
     """ record the failed login attempt, if over limit return False,
     if not over limit return True """
     # increment the failed count, and get current number
+    ip_count = increment_key(get_ip_attempt_cache_key(ip))
     user_count = increment_key(get_username_attempt_cache_key(username))
 
     status = config.LoginAttemptStatus.LOGIN_FAILED_PASS_USER
     user_block = False
+    ip_block = False
 
     if config.WARNING_LIMIT:
         if user_count == config.WARNING_LIMIT:
             return config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING
 
+    if config.ENABLE_IP_LOCK:
+        if ip_count > config.FAILURE_LIMIT:
+            block_ip(ip)
+            ip_block = True
+
     if user_count >= config.FAILURE_LIMIT:
         block_username(username)
         user_block = True
 
-    if user_block:
+    if ip_block or user_block:
         return config.LoginAttemptStatus.LOGIN_FAILED_LOCK_USER
     return status
 
@@ -242,14 +249,15 @@ def is_already_locked(request):
     ip_address = get_ip(request)
     username = request.POST.get(config.USERNAME_FORM_FIELD, None)
 
-    # ip blocked?
-    ip_blocked = redis_server.get(get_ip_blocked_cache_key(ip_address))
+    if config.ENABLE_IP_LOCK:
+        # ip blocked?
+        ip_blocked = redis_server.get(get_ip_blocked_cache_key(ip_address))
 
-    if not ip_blocked:
-        ip_blocked = False
-    else:
-        # short circuit no need to check username if ip is already blocked.
-        return True
+        if not ip_blocked:
+            ip_blocked = False
+        else:
+            # short circuit no need to check username if ip is already blocked.
+            return True
 
     # username blocked?
     user_blocked = redis_server.get(get_username_blocked_cache_key(username))
