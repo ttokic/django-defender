@@ -30,6 +30,8 @@ BEHIND_REVERSE_PROXY = get_setting('DEFENDER_BEHIND_REVERSE_PROXY', False)
 
 ENABLE_IP_LOCK = get_setting('DEFENDER_ENABLE_IP_LOCK', True)
 
+WARNING_LIMIT = get_setting('DEFENDER_LOGIN_WARNING_LIMIT')
+
 # the prefix for these keys in your cache.
 CACHE_PREFIX = get_setting('DEFENDER_CACHE_PREFIX', 'defender')
 
