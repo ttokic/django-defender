@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.admin.views.decorators import staff_member_required
+import json
 
 from .utils import (
     get_blocked_ips, get_blocked_usernames, unblock_ip, unblock_username)
@@ -34,4 +35,6 @@ def unblock_username_view(request, username):
     """ unblockt he given username """
     if request.method == 'POST':
         unblock_username(username)
-    return HttpResponseRedirect(reverse("defender_blocks_view"))
+        return HttpResponse(json.dumps({"status": "unlocked"}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({"status": "wrong request method"}), content_type='application/json')
