@@ -160,12 +160,16 @@ def record_failed_attempt(ip, username):
     """ record the failed login attempt, if over limit return False,
     if not over limit return True """
     # increment the failed count, and get current number
-    ip_count = increment_key(get_ip_attempt_cache_key(ip))
-    user_count = increment_key(get_username_attempt_cache_key(username))
 
     status = config.LoginAttemptStatus.LOGIN_FAILED_PASS_USER
     user_block = False
     ip_block = False
+    ip_count = 0
+
+    user_count = increment_key(get_username_attempt_cache_key(username))
+
+    if config.ENABLE_IP_LOCK:
+        ip_count = increment_key(get_ip_attempt_cache_key(ip))
 
     if config.WARNING_LIMIT:
         if (user_count == config.WARNING_LIMIT) or (config.ENABLE_IP_LOCK and ip_count == config.WARNING_LIMIT):
