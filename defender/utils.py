@@ -168,7 +168,7 @@ def record_failed_attempt(ip, username):
     ip_block = False
 
     if config.WARNING_LIMIT:
-        if user_count == config.WARNING_LIMIT:
+        if (user_count == config.WARNING_LIMIT) or (config.ENABLE_IP_LOCK and ip_count == config.WARNING_LIMIT):
             return config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING
 
     if config.ENABLE_IP_LOCK:
