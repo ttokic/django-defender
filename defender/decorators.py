@@ -47,8 +47,10 @@ def watch_login(func):
                 return utils.lockout_response(request)
 
             elif login_attempt_status == config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING:
+                number_of_attempts = utils.get_user_attempts(request)
                 return render_to_response('auth/login.html', {"error_list": ["Invalid email and/or password. "
-                                                                             "WARNING: Your account will lock after 2 more unsuccessful login attempts."]},
+                                                                             "WARNING: Your account will lock after {0} "
+                                                                             "more unsuccessful login attempts.".format(config.FAILURE_LIMIT - number_of_attempts)]},
                                                                              context_instance=RequestContext(request))
 
         return response
