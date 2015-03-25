@@ -172,7 +172,7 @@ def record_failed_attempt(ip, username):
         ip_count = increment_key(get_ip_attempt_cache_key(ip))
 
     if config.WARNING_LIMIT:
-        if (user_count == config.WARNING_LIMIT) or (config.ENABLE_IP_LOCK and ip_count == config.WARNING_LIMIT):
+        if (user_count >= config.WARNING_LIMIT and user_count < config.FAILURE_LIMIT) or (config.ENABLE_IP_LOCK and ip_count >= config.WARNING_LIMIT and ip_count < config.FAILURE_LIMIT):
             return config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING
 
     if config.ENABLE_IP_LOCK:
