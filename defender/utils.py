@@ -33,7 +33,7 @@ def get_ip_address_from_request(request):
         the loopback """
     remote_addr = request.META.get('REMOTE_ADDR', '')
     if remote_addr and is_valid_ip(remote_addr):
-            return remote_addr.strip()
+        return remote_addr.strip()
     return '127.0.0.1'
 
 
@@ -131,6 +131,9 @@ def get_user_attempts(request):
     # return the larger of the two.
     return max(ip_count, username_count)
 
+
+def attempts_remaining(request):
+    return config.FAILURE_LIMIT - get_user_attempts(request)
 
 def block_ip(ip):
     """ given the ip, block it """
