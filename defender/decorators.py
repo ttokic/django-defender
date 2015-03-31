@@ -47,7 +47,7 @@ def watch_login(func):
                 return utils.lockout_response(request)
 
             elif login_attempt_status == config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING:
-                response.context["defender_number_of_attempts"] = utils.get_user_attempts(request)
+                response.context["defender_attempts_left"] = config.FAILURE_LIMIT - utils.get_user_attempts(request)
                 return response
 
         return response
