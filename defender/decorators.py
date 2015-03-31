@@ -1,7 +1,6 @@
 from . import utils
 from . import config
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+
 
 def watch_login(func):
     """
@@ -45,10 +44,6 @@ def watch_login(func):
 
             elif login_attempt_status == config.LoginAttemptStatus.LOGIN_FAILED_LOCK_USER:
                 return utils.lockout_response(request)
-
-            elif login_attempt_status == config.LoginAttemptStatus.LOGIN_FAILED_SHOW_WARNING:
-                response.context["defender_attempts_left"] = config.FAILURE_LIMIT - utils.get_user_attempts(request)
-                return response
 
         return response
 
