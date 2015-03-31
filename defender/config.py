@@ -51,11 +51,6 @@ LOCKOUT_TEMPLATE = get_setting('DEFENDER_LOCKOUT_TEMPLATE')
 ERROR_MESSAGE = ugettext_lazy("Please enter a correct username and password. "
                               "Note that both fields are case-sensitive.")
 
-WARNING_MESSAGE = get_setting('WARNING_MESSAGE',
-                              ugettext_lazy("Invalid email and/or password. "
-                                            "WARNING: Your account will lock after %d more unsuccessful login attempts."
-                                            % (FAILURE_LIMIT - WARNING_LIMIT)))
-
 # use a specific username field to retrieve from login POST data
 USERNAME_FORM_FIELD = get_setting('DEFENDER_USERNAME_FORM_FIELD', 'username')
 
