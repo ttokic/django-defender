@@ -19,7 +19,15 @@ def get_redis_connection():
     if config.MOCK_REDIS:  # pragma: no cover
         return mocked_redis  # pragma: no cover
     else:  # pragma: no cover
-        redis_config = parse_redis_url(config.DEFENDER_REDIS_URL)
+        if config.DEFENDER_REDIS_URL:
+            redis_config = parse_redis_url(config.DEFENDER_REDIS_URL)
+        else:
+            redis_config = {
+                "DB": 0,
+                "PASSWORD": None,
+                "HOST": config.REDIS_HOST,
+                "PORT": 6379,
+            }
         return redis.StrictRedis(
             host=redis_config.get('HOST'),
             port=redis_config.get('PORT'),
