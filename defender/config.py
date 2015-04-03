@@ -16,6 +16,7 @@ def get_setting(variable, default=None):
 
 # redis server host
 DEFENDER_REDIS_URL = get_setting('DEFENDER_REDIS_URL')
+REDIS_HOST = get_setting('REDIS_HOST')
 
 MOCK_REDIS = get_setting('DEFENDER_MOCK_REDIS', False)
 
