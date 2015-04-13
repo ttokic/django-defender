@@ -7,7 +7,7 @@ urlpatterns = patterns(
         name="defender_blocks_view"),
     url(r'^blocks/ip/(?P<ip>[a-z0-9-._]+)/unblock$', unblock_ip_view,
         name="defender_unblock_ip_view"),
-    url(r'^blocks/username/(?P<username>[a-z0-9-._@]+)/unblock/$',
+    url(r'^blocks/user_id/(?P<user_id>\w+)/unblock/$',
         unblock_username_view,
         name="defender_unblock_username_view"),
 )

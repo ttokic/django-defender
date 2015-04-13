@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from bcore.apps.authorization.models import in_supportuser_or_programmanager_group
 from bcore.apps.common.utils import create_custom_JSON_error_response
 from bcore.apps.audit.hbx_signals import log_user_unlock
+from bcore.apps.authorization.models import HBXUser as User
 import json
 
 from .utils import (
@@ -43,9 +44,10 @@ def unblock_ip_view(request, ip):
 
 @login_required
 @user_passes_test(in_supportuser_or_programmanager_group, login_url=reverse_lazy(AUTH_FAILED_URL), redirect_field_name='')
-def unblock_username_view(request, username):
+def unblock_username_view(request, user_id):
     """ unblock he given username """
     if request.method == 'POST':
+        username = User.objects.get(id=user_id).username
         unblock_username(username)
         log_user_unlock.send(sender=unblock_username_view, request=request, username=username)
         return HttpResponse(json.dumps({"status": "unlocked"}), content_type='application/json')
