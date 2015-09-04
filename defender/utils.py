@@ -212,8 +212,8 @@ def unblock_username(username, pipe=None):
         pipe = redis_server.pipeline()
         do_commit = True
     if username:
-        pipe.delete(get_username_attempt_cache_key(username))
-        pipe.delete(get_username_blocked_cache_key(username))
+        pipe.delete(get_username_attempt_cache_key(username.lower()))
+        pipe.delete(get_username_blocked_cache_key(username.lower()))
         if do_commit:
             pipe.execute()
 
